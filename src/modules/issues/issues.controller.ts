@@ -32,7 +32,8 @@ export const list = async (req: Request, res: Response) => {
     const data = issues.map(i => ({ ...i, reporter: reportersMap[i.reporter_id] || null }));
     return success(res, StatusCodes.OK, 'Issues retrived successfully', data);
   } catch (err: any) {
-    return fail(res, 500, 'Failed to get issues', err.message);
+    console.error('GET /api/issues error:', err);
+    return fail(res, 500, 'Failed to get issues', err.message || err);
   }
 };
 
