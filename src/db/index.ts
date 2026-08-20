@@ -7,7 +7,8 @@ export const pool = new Pool({ connectionString: (config as any).connection_stri
 
 export const initDb = async () => {
 	try {
-		const schemaPath = path.resolve(__dirname, '..', 'sql', 'schema.sql');
+		// schema is located at <project_root>/sql/schema.sql
+		const schemaPath = path.resolve(__dirname, '..', '..', 'sql', 'schema.sql');
 		if (fs.existsSync(schemaPath)) {
 			const sql = fs.readFileSync(schemaPath, 'utf8');
 			await pool.query(sql);
