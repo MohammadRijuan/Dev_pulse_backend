@@ -9,13 +9,13 @@ const main = async () => {
     const detail = Array.isArray(err?.errors) && err.errors.length
       ? err.errors.map((e: any) => e.message || String(e)).join('; ')
       : err?.message || err;
-    console.error('❌ Failed to connect to the database. Check your DATABASE_URL in .env');
-    console.error('Reason:', detail);
+    console.error(' Failed to connect to the database');
+    console.error('error:', detail);
     process.exit(1);
   }
 
   app.listen(config.port, () => {
-    console.log(`Example app listening on port ${config.port}`);
+    console.log(`Dev pulse app running on port ${config.port}`);
   });
 };
 
