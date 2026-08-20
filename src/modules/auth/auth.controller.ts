@@ -6,6 +6,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config';
 
+const describeError = (err: any) =>
+  Array.isArray(err?.errors) && err.errors.length
+    ? err.errors.map((e: any) => e.message || String(e)).join('; ')
+    : err?.message || 'Unknown error';
+
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password) return fail(res, 400, 'Missing fields');
@@ -16,7 +21,8 @@ export const signup = async (req: Request, res: Response) => {
     const user = await createUser(name, email, password, useRole as any);
     return success(res, StatusCodes.CREATED, 'User registered successfully', user);
   } catch (err: any) {
-    return fail(res, 500, 'Failed to register user', err.message);
+    console.error('[signup]', err);
+    return fail(res, 500, 'Failed to register user', describeError(err));
   }
 };
 
@@ -31,6 +37,7 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user.id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '8h' });
     return success(res, StatusCodes.OK, 'Login successful', { token, user: { id: user.id, name: user.name, email: user.email, role: user.role, created_at: user.created_at, updated_at: user.updated_at } });
   } catch (err: any) {
-    return fail(res, 500, 'Login failed', err.message);
+    console.error('[login]', err);
+    return fail(res, 500, 'Login failed', describeError(err));
   }
 };

@@ -22,7 +22,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/issues', issuesRoutes);
 app.use('/api/users', userRoutes);
 
-// Root health/readiness endpoint
 app.get('/', (req, res) => {
 	res.json({ success: true, message: 'DevPulse project is ready' });
 });
